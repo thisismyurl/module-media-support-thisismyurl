@@ -5,6 +5,21 @@
  * This module is loaded by the TIMU Core Module Loader.
  * It is NOT a WordPress plugin, but an extension of Core.
  *
+ * PURPOSE:
+ * Serves as the Media Hub - central coordination layer for all media processing
+ * across the TIMU suite. Provides shared infrastructure for images, video, and audio.
+ *
+ * SCOPE:
+ * - Shared media optimization and transcoding infrastructure
+ * - Cross-media-type features (usage tracking, collections, policies)
+ * - Batch processing coordination
+ * - Media insights and analytics
+ *
+ * NOT IN SCOPE (belongs in plugin-images-thisismyurl):
+ * - Image-specific editing tools (crop, filters, etc.)
+ * - Smart image tagging and face detection
+ * - Image-specific social media features
+ *
  * @package TIMU_CORE
  * @subpackage TIMU_MEDIA_HUB
  */
@@ -41,6 +56,8 @@ function timu_media_init(): void {
 	}
 
 	// Register with Core module registry (Hub-level for media layer).
+	// This hub provides shared infrastructure for ALL media types.
+	// Image-specific features belong in plugin-images-thisismyurl.
 	do_action(
 		'timu_register_module',
 		array(
@@ -49,8 +66,8 @@ function timu_media_init(): void {
 			'type'         => 'hub',
 			'suite'        => 'media',
 			'version'      => TIMU_MEDIA_VERSION,
-			'description'  => __( 'Media hub for non-image media processing, batching, and policies.', TIMU_MEDIA_TEXT_DOMAIN ),
-			'capabilities' => array( 'media_hub', 'batch', 'policies' ),
+			'description'  => __( 'Media hub for shared media processing, batching, policies, and analytics across all media types.', TIMU_MEDIA_TEXT_DOMAIN ),
+			'capabilities' => array( 'media_hub', 'batch', 'policies', 'analytics', 'usage_tracking' ),
 			'path'         => TIMU_MEDIA_PATH,
 			'url'          => TIMU_MEDIA_URL,
 			'basename'     => TIMU_MEDIA_BASENAME,
