@@ -114,8 +114,13 @@ class Watermark_Manager extends Image_Processor {
 		$new_filename = $pathinfo['filename'] . '-watermark.' . $pathinfo['extension'];
 		$new_filepath = $pathinfo['dirname'] . '/' . $new_filename;
 
-		if ( ! copy( $result, $new_filepath ) ) {
-			return false;
+		// Move temp file instead of copy for reliability
+		if ( ! rename( $result, $new_filepath ) ) {
+			// Fallback to copy if rename fails (e.g., across filesystems)
+			if ( ! copy( $result, $new_filepath ) ) {
+				return false;
+			}
+			@unlink( $result );
 		}
 
 		return array(

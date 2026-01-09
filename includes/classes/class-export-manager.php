@@ -53,14 +53,15 @@ class Export_Manager extends Image_Processor {
 	 * @return string|false Path to zip file or false on failure.
 	 */
 	public static function export_as_bundle( int $attachment_id, array $platforms ) {
-		$exports = self::export_multi_platform( $attachment_id, $platforms );
-		
-		if ( empty( $exports ) ) {
+		if ( ! class_exists( 'ZipArchive' ) ) {
+			// Log error for debugging
+			error_log( 'TIMU Media: ZipArchive class not available for bundle export' );
 			return false;
 		}
 
-		// Create zip file
-		if ( ! class_exists( 'ZipArchive' ) ) {
+		$exports = self::export_multi_platform( $attachment_id, $platforms );
+		
+		if ( empty( $exports ) ) {
 			return false;
 		}
 

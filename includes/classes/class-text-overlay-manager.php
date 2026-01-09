@@ -150,7 +150,9 @@ class Text_Overlay_Manager extends Image_Processor {
 		$font_size = $options['font_size'];
 
 		// Use built-in font (GD limitation without external font files)
-		$font = 5;
+		// Font 5 is the largest built-in GD font
+		define( 'TIMU_GD_LARGE_FONT', 5 );
+		$font = TIMU_GD_LARGE_FONT;
 		$text_width  = imagefontwidth( $font ) * strlen( $text );
 		$text_height = imagefontheight( $font );
 

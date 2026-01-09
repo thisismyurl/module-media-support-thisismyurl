@@ -126,22 +126,25 @@ class Crop_Manager extends Image_Processor {
 		$target_ratio = $target_w / $target_h;
 		$orig_ratio   = $orig_w / $orig_h;
 
-		if ( $orig_ratio > $target_ratio ) {
+		// Check for exact match first to avoid unnecessary calculations
+		if ( abs( $orig_ratio - $target_ratio ) < 0.001 ) {
+			// Aspect ratios match - just resize
+			$image->resize( $target_w, $target_h, false );
+		} elseif ( $orig_ratio > $target_ratio ) {
 			// Original is wider - crop width
 			$crop_w = (int) ( $orig_h * $target_ratio );
 			$crop_h = $orig_h;
 			$x      = $center ? (int) ( ( $orig_w - $crop_w ) / 2 ) : 0;
 			$y      = 0;
+			$image->crop( $x, $y, $crop_w, $crop_h, $target_w, $target_h );
 		} else {
 			// Original is taller - crop height
 			$crop_w = $orig_w;
 			$crop_h = (int) ( $orig_w / $target_ratio );
 			$x      = 0;
 			$y      = $center ? (int) ( ( $orig_h - $crop_h ) / 2 ) : 0;
+			$image->crop( $x, $y, $crop_w, $crop_h, $target_w, $target_h );
 		}
-
-		// Crop the image
-		$image->crop( $x, $y, $crop_w, $crop_h, $target_w, $target_h );
 
 		return self::save_image( $image, $attachment_id, 'crop-' . $preset_name );
 	}

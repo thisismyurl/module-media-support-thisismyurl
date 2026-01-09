@@ -104,16 +104,23 @@ class Ajax_Handler {
 			wp_send_json_error( array( 'message' => __( 'Invalid parameters', TIMU_MEDIA_TEXT_DOMAIN ) ) );
 		}
 
-		// Sanitize options
-		$sanitized_options = array();
-		if ( isset( $options['font_size'] ) ) {
-			$sanitized_options['font_size'] = absint( $options['font_size'] );
+		// Sanitize options - ensure it's an array and validate structure
+		if ( ! is_array( $options ) ) {
+			$options = array();
 		}
-		if ( isset( $options['font_color'] ) ) {
+
+		$sanitized_options = array();
+		$allowed_positions = array( 'top', 'top-left', 'top-right', 'center', 'bottom', 'bottom-left', 'bottom-right' );
+		
+		if ( isset( $options['font_size'] ) ) {
+			$sanitized_options['font_size'] = max( 12, min( 200, absint( $options['font_size'] ) ) );
+		}
+		if ( isset( $options['font_color'] ) && is_string( $options['font_color'] ) ) {
 			$sanitized_options['font_color'] = sanitize_hex_color( $options['font_color'] );
 		}
-		if ( isset( $options['position'] ) ) {
-			$sanitized_options['position'] = sanitize_text_field( $options['position'] );
+		if ( isset( $options['position'] ) && is_string( $options['position'] ) ) {
+			$position = sanitize_text_field( $options['position'] );
+			$sanitized_options['position'] = in_array( $position, $allowed_positions, true ) ? $position : 'bottom';
 		}
 
 		$result = Text_Overlay_Manager::add_text_overlay( $attachment_id, $text, $sanitized_options );
