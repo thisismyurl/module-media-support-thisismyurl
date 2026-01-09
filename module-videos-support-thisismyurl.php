@@ -470,7 +470,7 @@ function timu_video_init(): void {
 					wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', TIMU_VIDEO_TEXT_DOMAIN ) ) );
 				}
 
-				$attachment_id = isset( $_POST['attachment_id'] ) ? intval( $_POST['attachment_id'] ) : 0;
+				$attachment_id = isset( $_POST['attachment_id'] ) ? intval( wp_unslash( $_POST['attachment_id'] ) ) : 0;
 
 				if ( ! $attachment_id || ! wp_attachment_is( 'video', $attachment_id ) ) {
 					wp_send_json_error( array( 'message' => __( 'Invalid video attachment.', TIMU_VIDEO_TEXT_DOMAIN ) ) );
@@ -490,7 +490,7 @@ function timu_video_init(): void {
 					wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', TIMU_VIDEO_TEXT_DOMAIN ) ) );
 				}
 
-				$attachment_id = isset( $_POST['attachment_id'] ) ? intval( $_POST['attachment_id'] ) : 0;
+				$attachment_id = isset( $_POST['attachment_id'] ) ? intval( wp_unslash( $_POST['attachment_id'] ) ) : 0;
 				$chapters      = isset( $_POST['chapters'] ) ? sanitize_textarea_field( wp_unslash( $_POST['chapters'] ) ) : '';
 
 				if ( ! $attachment_id ) {
@@ -511,7 +511,7 @@ function timu_video_init(): void {
 					wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', TIMU_VIDEO_TEXT_DOMAIN ) ) );
 				}
 
-				$attachment_id = isset( $_POST['attachment_id'] ) ? intval( $_POST['attachment_id'] ) : 0;
+				$attachment_id = isset( $_POST['attachment_id'] ) ? intval( wp_unslash( $_POST['attachment_id'] ) ) : 0;
 
 				if ( ! $attachment_id || ! wp_attachment_is( 'video', $attachment_id ) ) {
 					wp_send_json_error( array( 'message' => __( 'Invalid video attachment.', TIMU_VIDEO_TEXT_DOMAIN ) ) );
@@ -531,7 +531,7 @@ function timu_video_init(): void {
 					wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', TIMU_VIDEO_TEXT_DOMAIN ) ) );
 				}
 
-				$attachment_id = isset( $_POST['attachment_id'] ) ? intval( $_POST['attachment_id'] ) : 0;
+				$attachment_id = isset( $_POST['attachment_id'] ) ? intval( wp_unslash( $_POST['attachment_id'] ) ) : 0;
 				$platform      = isset( $_POST['platform'] ) ? sanitize_text_field( wp_unslash( $_POST['platform'] ) ) : '';
 
 				if ( ! $attachment_id || ! wp_attachment_is( 'video', $attachment_id ) ) {
@@ -580,7 +580,7 @@ function timu_video_init(): void {
 				ob_start();
 				?>
 				<div class="timu-video-player" data-video-id="<?php echo esc_attr( $attachment_id ); ?>">
-					<video controls <?php echo ( 'true' === $atts['pip'] ) ? 'controlsList="nodownload" disablePictureInPicture="false"' : ''; ?>>
+					<video controls <?php echo ( 'true' === $atts['pip'] ) ? '' : 'disablePictureInPicture'; ?>>
 						<source src="<?php echo esc_url( $video_url ); ?>" type="<?php echo esc_attr( get_post_mime_type( $attachment_id ) ); ?>">
 						<?php esc_html_e( 'Your browser does not support the video tag.', TIMU_VIDEO_TEXT_DOMAIN ); ?>
 					</video>
@@ -652,6 +652,9 @@ function timu_video_init(): void {
 			 */
 			private function get_setting( string $section, string $key, $default = null ) {
 				$options = get_option( 'timu_video_settings_group', array() );
+				if ( ! isset( $options[ $section ] ) || ! is_array( $options[ $section ] ) ) {
+					return $default;
+				}
 				return $options[ $section ][ $key ] ?? $default;
 			}
 
