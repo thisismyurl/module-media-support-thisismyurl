@@ -75,7 +75,7 @@ class OAuth_Handler {
 	 */
 	public function handle_oauth_callback(): void {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- OAuth callback from Canva.
-		if ( ! isset( $_GET['page'] ) || 'timu-canva-oauth-callback' !== $_GET['page'] ) {
+		if ( ! isset( $_GET['page'] ) || 'timu-canva-oauth-callback' !== sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) {
 			return;
 		}
 

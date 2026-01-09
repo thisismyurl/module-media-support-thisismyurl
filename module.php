@@ -222,7 +222,9 @@ function timu_media_init(): void {
 	new TIMU_Media_Support();
 
 	// Initialize Canva Integration.
-	if ( class_exists( __NAMESPACE__ . '\\Canva\\Canva_Integration' ) ) {
+	if ( class_exists( __NAMESPACE__ . '\\Canva\\Canva_Integration' ) &&
+		class_exists( __NAMESPACE__ . '\\Canva\\OAuth_Handler' ) &&
+		class_exists( __NAMESPACE__ . '\\Canva\\Sync_Manager' ) ) {
 		Canva\Canva_Integration::get_instance();
 		Canva\OAuth_Handler::get_instance();
 		Canva\Sync_Manager::get_instance();

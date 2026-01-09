@@ -270,7 +270,9 @@ class Canva_Integration {
 		$attachment_id = media_handle_sideload( $file_array, 0 );
 
 		if ( is_wp_error( $attachment_id ) ) {
-			@unlink( $tmp_file );
+			if ( file_exists( $tmp_file ) ) {
+				unlink( $tmp_file );
+			}
 			return $attachment_id;
 		}
 
@@ -368,24 +370,35 @@ class Canva_Integration {
 	 */
 	private function optimize_imported_image( int $attachment_id ): void {
 		// Convert to WebP if possible.
-		if ( function_exists( 'wp_get_webp_info' ) ) {
-			$file = get_attached_file( $attachment_id );
-			if ( $file ) {
-				$editor = wp_get_image_editor( $file );
-				if ( ! is_wp_error( $editor ) ) {
-					$editor->set_mime_type( 'image/webp' );
-					$saved = $editor->save( str_replace( '.png', '.webp', $file ) );
-					if ( ! is_wp_error( $saved ) ) {
-						update_attached_file( $attachment_id, $saved['path'] );
-						wp_update_post(
-							array(
-								'ID'             => $attachment_id,
-								'post_mime_type' => 'image/webp',
-							)
-						);
-					}
-				}
-			}
+		$file = get_attached_file( $attachment_id );
+		if ( ! $file ) {
+			return;
+		}
+
+		$editor = wp_get_image_editor( $file );
+		if ( is_wp_error( $editor ) ) {
+			return;
+		}
+
+		// Check if WebP is supported by the image editor.
+		if ( ! $editor->supports_mime_type( 'image/webp' ) ) {
+			// Generate responsive sizes with original format.
+			wp_generate_attachment_metadata( $attachment_id, $file );
+			return;
+		}
+
+		// Save as WebP.
+		$webp_file = str_replace( '.png', '.webp', $file );
+		$saved = $editor->save( $webp_file, 'image/webp' );
+		
+		if ( ! is_wp_error( $saved ) && isset( $saved['path'] ) ) {
+			update_attached_file( $attachment_id, $saved['path'] );
+			wp_update_post(
+				array(
+					'ID'             => $attachment_id,
+					'post_mime_type' => 'image/webp',
+				)
+			);
 		}
 
 		// Generate responsive sizes.
@@ -494,7 +507,7 @@ class Canva_Integration {
 			)
 		);
 
-		return $query->posts[0] ?? false;
+		return ! empty( $query->posts ) ? $query->posts[0] : false;
 	}
 
 	/**
