@@ -1,0 +1,159 @@
+/**
+ * Media Enhancements Styles
+ */
+
+.timu-media-enhancements {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.timu-media-enhancements h3 {
+    margin-top: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1d2327;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.timu-section {
+    margin-bottom: 20px;
+}
+
+.timu-section h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1d2327;
+    margin-bottom: 10px;
+}
+
+/* Filters Grid */
+.timu-filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 8px;
+}
+
+.timu-filters-grid .button {
+    padding: 8px 12px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* Crop Presets */
+.timu-crop-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.timu-crop-presets .button {
+    padding: 6px 10px;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+/* Template Select */
+.timu-template-select {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 10px;
+}
+
+/* Output Areas */
+.timu-output {
+    margin-top: 10px;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    min-height: 40px;
+}
+
+.timu-output:empty {
+    display: none;
+}
+
+.timu-output textarea {
+    font-family: monospace;
+    font-size: 12px;
+    resize: vertical;
+}
+
+.timu-output .error {
+    color: #d63638;
+    margin: 0;
+}
+
+/* Preview Results */
+.timu-preview-results {
+    font-size: 12px;
+}
+
+.timu-preview-item {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.timu-preview-item:last-child {
+    border-bottom: none;
+}
+
+.timu-preview-item .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+.timu-preview-item .dashicons-yes {
+    color: #00a32a;
+}
+
+.timu-preview-item .dashicons-warning {
+    color: #dba617;
+}
+
+/* Responsive */
+@media (max-width: 782px) {
+    .timu-filters-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .timu-crop-presets .button {
+        font-size: 10px;
+        padding: 5px 8px;
+    }
+}
+
+/* Media Modal Integration */
+.attachment-details .timu-media-enhancements {
+    margin-top: 15px;
+}
+
+/* Loading State */
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Success Messages */
+.timu-success {
+    color: #00a32a;
+    padding: 10px;
+    background: #f0f6f0;
+    border-left: 3px solid #00a32a;
+    margin-top: 10px;
+}
+
+/* Error Messages */
+.timu-error {
+    color: #d63638;
+    padding: 10px;
+    background: #fcf0f1;
+    border-left: 3px solid #d63638;
+    margin-top: 10px;
+}
