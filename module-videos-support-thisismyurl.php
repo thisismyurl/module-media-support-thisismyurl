@@ -575,12 +575,17 @@ function timu_video_init(): void {
 				}
 
 				$video_url = wp_get_attachment_url( $attachment_id );
-				$chapters  = get_post_meta( $attachment_id, '_timu_video_chapters', true );
+				if ( ! $video_url ) {
+					return '';
+				}
+
+				$chapters         = get_post_meta( $attachment_id, '_timu_video_chapters', true );
+				$pip_attribute    = ( 'true' === $atts['pip'] ) ? '' : 'disablePictureInPicture';
 
 				ob_start();
 				?>
 				<div class="timu-video-player" data-video-id="<?php echo esc_attr( $attachment_id ); ?>">
-					<video controls <?php echo ( 'true' === $atts['pip'] ) ? '' : 'disablePictureInPicture'; ?>>
+					<video controls <?php echo $pip_attribute; ?>>
 						<source src="<?php echo esc_url( $video_url ); ?>" type="<?php echo esc_attr( get_post_mime_type( $attachment_id ) ); ?>">
 						<?php esc_html_e( 'Your browser does not support the video tag.', TIMU_VIDEO_TEXT_DOMAIN ); ?>
 					</video>
@@ -597,7 +602,8 @@ function timu_video_init(): void {
 					<?php endif; ?>
 				</div>
 				<?php
-				return ob_get_clean();
+				$output = ob_get_clean();
+				return $output ? $output : '';
 			}
 
 			/**
