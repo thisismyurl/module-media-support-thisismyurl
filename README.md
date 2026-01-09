@@ -84,7 +84,7 @@ Planning documents for related repositories:
 
 ## Requirements
 
-- **PHP**: 8.1.29 or higher
+- **PHP**: 8.1+ (8.1.29 or higher)
 - **WordPress**: 6.4.0 or higher
 - **Core Support**: Requires `core-support-thisismyurl` module
 

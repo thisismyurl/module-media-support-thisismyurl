@@ -377,7 +377,7 @@ automation:
   enabled: true
   max_parallel_jobs: 3
   memory_limit: 256M
-  
+
   workflows:
     - name: "Auto-optimize uploads"
       trigger: "upload"
@@ -386,7 +386,7 @@ automation:
             quality: 85
         - convert:
             to: webp
-    
+
     - name: "Weekly cleanup"
       trigger: "schedule"
       schedule: "weekly"
@@ -396,12 +396,12 @@ automation:
         - delete:
             confirm: true
             notify: admin
-  
+
   scheduled_tasks:
     - name: "Daily optimization"
       schedule: "0 2 * * *"
       command: "wp media optimize --type=image/jpeg"
-    
+
     - name: "Weekly report"
       schedule: "0 9 * * 1"
       command: "wp media disk-usage --email=admin@example.com"

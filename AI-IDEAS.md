@@ -12,7 +12,7 @@ The AI module should provide:
 - Automated content moderation
 - Accessibility enhancements
 
-**Important Note**: The original issue mentions AI features but doesn't provide detailed requirements. This document outlines potential features based on modern AI capabilities and WordPress ecosystem needs.
+**Note**: This document expands on AI-related ideas from the original issue ("Optional local AI (or rule‑based) suggestions for tags") with comprehensive feature proposals based on modern AI capabilities, WordPress ecosystem needs, and alignment with the project's local-first, privacy-focused approach.
 
 ---
 

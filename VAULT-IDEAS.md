@@ -184,23 +184,28 @@ The Vault plugin should:
 - Derived renditions on-demand generation
 
 ### Database Schema
-```
-vault_versions:
-- id
-- attachment_id
-- version_number
-- file_path
-- created_at
-- created_by
-- notes
+```sql
+CREATE TABLE vault_versions (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  attachment_id BIGINT UNSIGNED NOT NULL,
+  version_number INT UNSIGNED NOT NULL,
+  file_path VARCHAR(255) NOT NULL,
+  created_at DATETIME NOT NULL,
+  created_by BIGINT UNSIGNED NOT NULL,
+  notes TEXT,
+  INDEX idx_attachment_id (attachment_id),
+  INDEX idx_version_number (attachment_id, version_number)
+);
 
-vault_edits:
-- id
-- version_id
-- edit_type
-- edit_data
-- applied_at
-- applied_by
+CREATE TABLE vault_edits (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  version_id BIGINT UNSIGNED NOT NULL,
+  edit_type VARCHAR(50) NOT NULL,
+  edit_data TEXT NOT NULL,
+  applied_at DATETIME NOT NULL,
+  applied_by BIGINT UNSIGNED NOT NULL,
+  INDEX idx_version_id (version_id)
+);
 ```
 
 ### APIs to Expose

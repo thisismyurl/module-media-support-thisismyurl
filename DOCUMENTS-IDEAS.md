@@ -245,11 +245,11 @@ document_security_log:
 
 | Role | Upload | Sanitize Required | Size Limit | Security Scan | Audit Log |
 |------|--------|-------------------|------------|---------------|-----------|
-| Super Admin | Yes | No | None | Optional | Yes |
-| Administrator | Yes | Optional | High | Recommended | Yes |
-| Editor | Yes | Yes | Medium | Required | Yes |
-| Author | Yes | Yes | Low | Required | Yes |
-| Contributor | Limited | Yes | Very Low | Required | Yes |
+| Super Admin | Yes | No | Unlimited | Optional | Yes |
+| Administrator | Yes | Optional | 100 MB | Recommended | Yes |
+| Editor | Yes | Yes | 50 MB | Required | Yes |
+| Author | Yes | Yes | 20 MB | Required | Yes |
+| Contributor | Limited | Yes | 10 MB | Required | Yes |
 
 ---
 
