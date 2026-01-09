@@ -41,7 +41,7 @@ define( 'TIMU_MEDIA_REQUIRES_WORDPRESS', 'plugin-wordpress-support-thisismyurl/p
  */
 function timu_media_init(): void {
 	// Verify WordPress Support is present.
-	if ( ! function_exists( 'timu_wordpress_support_init' ) && ! class_exists( '\\TIMU\\WordPressSupport\\TIMU_WordPress_Support' ) ) {
+	if ( ! class_exists( '\\TIMU\\WordPressSupport\\TIMU_WordPress_Support' ) ) {
 		add_action( 'admin_notices', __NAMESPACE__ . '\timu_media_missing_wordpress_support_notice' );
 		return;
 	}
@@ -147,9 +147,14 @@ function timu_media_missing_wordpress_support_notice(): void {
 	if ( ! current_user_can( 'activate_plugins' ) ) {
 		return;
 	}
+	$plugin_name = dirname( TIMU_MEDIA_REQUIRES_WORDPRESS );
 	printf(
 		'<div class="notice notice-error"><p>%s</p></div>',
-		esc_html__( 'Media Support requires WordPress Support (plugin-wordpress-support-thisismyurl) to be installed and active.', TIMU_MEDIA_TEXT_DOMAIN )
+		sprintf(
+			/* translators: %s: plugin name */
+			esc_html__( 'Media Support requires WordPress Support (%s) to be installed and active.', TIMU_MEDIA_TEXT_DOMAIN ),
+			esc_html( $plugin_name )
+		)
 	);
 }
 
