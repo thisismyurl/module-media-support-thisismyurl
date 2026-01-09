@@ -1,0 +1,50 @@
+/**
+ * Design Hub Styles
+ */
+
+/* Design Hub Container */
+.timu-design-hub-connectors {
+	margin: 30px 0;
+}
+
+/* Info Notice */
+.timu-design-hub-connectors .notice {
+	margin: 20px 0;
+}
+
+/* Connector Actions */
+.timu-design-hub .button-primary {
+	background: #2271b1;
+	border-color: #2271b1;
+	color: #fff;
+}
+
+.timu-design-hub .button-primary:hover {
+	background: #135e96;
+	border-color: #135e96;
+}
+
+/* Empty State */
+.timu-design-hub-empty {
+	text-align: center;
+	padding: 60px 20px;
+	color: #666;
+}
+
+.timu-design-hub-empty .dashicons {
+	font-size: 64px;
+	width: 64px;
+	height: 64px;
+	color: #ccc;
+	margin-bottom: 20px;
+}
+
+.timu-design-hub-empty h3 {
+	margin: 20px 0 10px;
+	color: #1d2327;
+}
+
+.timu-design-hub-empty p {
+	font-size: 14px;
+	margin-bottom: 25px;
+}

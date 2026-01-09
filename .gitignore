@@ -1,0 +1,36 @@
+# WordPress
+wp-config.php
+wp-content/uploads/
+wp-content/cache/
+
+# Build artifacts
+*.map
+*.min.js
+*.min.css
+dist/
+build/
+
+# Dependencies
+node_modules/
+vendor/
+
+# IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+error_log
+debug.log
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~

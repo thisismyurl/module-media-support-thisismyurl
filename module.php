@@ -31,6 +31,35 @@ define( 'TIMU_SUITE_ID', 'thisismyurl-media-suite-2026' );
 define( 'TIMU_MEDIA_REQUIRES_CORE', 'core-support-thisismyurl/core-support-thisismyurl.php' );
 
 /**
+ * Autoloader for Canva and Design Hub classes.
+ */
+spl_autoload_register(
+	function ( $class ) {
+		$prefix = 'TIMU\\MediaSupport\\';
+		$base_dir = __DIR__ . '/includes/';
+
+		$len = strlen( $prefix );
+		if ( strncmp( $prefix, $class, $len ) !== 0 ) {
+			return;
+		}
+
+		$relative_class = substr( $class, $len );
+		$relative_class = str_replace( '\\', '/', $relative_class );
+		$relative_class = strtolower( str_replace( '_', '-', $relative_class ) );
+
+		$parts = explode( '/', $relative_class );
+		$class_name = array_pop( $parts );
+		$namespace_path = implode( '/', $parts );
+
+		$file = $base_dir . $namespace_path . '/class-' . $class_name . '.php';
+
+		if ( file_exists( $file ) ) {
+			require $file;
+		}
+	}
+);
+
+/**
  * Initialize Media Support.
  */
 function timu_media_init(): void {
@@ -93,6 +122,72 @@ function timu_media_init(): void {
 								),
 							),
 						),
+						'canva_settings' => array(
+							'title'       => __( 'Canva Integration', TIMU_MEDIA_TEXT_DOMAIN ),
+							'description' => __( 'Connect and configure Canva for creating and managing designs.', TIMU_MEDIA_TEXT_DOMAIN ),
+							'fields'      => array(
+								'client_id' => array(
+									'type'        => 'text',
+									'label'       => __( 'Canva Client ID', TIMU_MEDIA_TEXT_DOMAIN ),
+									'description' => __( 'Enter your Canva API Client ID.', TIMU_MEDIA_TEXT_DOMAIN ),
+									'option_name' => 'timu_canva_client_id',
+								),
+								'client_secret' => array(
+									'type'        => 'password',
+									'label'       => __( 'Canva Client Secret', TIMU_MEDIA_TEXT_DOMAIN ),
+									'description' => __( 'Enter your Canva API Client Secret.', TIMU_MEDIA_TEXT_DOMAIN ),
+									'option_name' => 'timu_canva_client_secret',
+								),
+								'auto_sync' => array(
+									'type'         => 'toggle',
+									'label'        => __( 'Enable Auto-Sync', TIMU_MEDIA_TEXT_DOMAIN ),
+									'description'  => __( 'Automatically sync designs from Canva hourly.', TIMU_MEDIA_TEXT_DOMAIN ),
+									'default'      => 0,
+									'option_name'  => 'timu_canva_auto_sync',
+								),
+								'auto_update' => array(
+									'type'         => 'toggle',
+									'label'        => __( 'Auto-Update Designs', TIMU_MEDIA_TEXT_DOMAIN ),
+									'description'  => __( 'Automatically update imported designs when they change in Canva.', TIMU_MEDIA_TEXT_DOMAIN ),
+									'default'      => 0,
+									'option_name'  => 'timu_canva_auto_update',
+								),
+							),
+						),
+						'design_hub_settings' => array(
+							'title'       => __( 'Design Hub', TIMU_MEDIA_TEXT_DOMAIN ),
+							'description' => __( 'Enable integrations with multiple design platforms.', TIMU_MEDIA_TEXT_DOMAIN ),
+							'fields'      => array(
+								'canva_enabled' => array(
+									'type'         => 'toggle',
+									'label'        => __( 'Enable Canva', TIMU_MEDIA_TEXT_DOMAIN ),
+									'description'  => __( 'Show Canva in Design Hub.', TIMU_MEDIA_TEXT_DOMAIN ),
+									'default'      => 1,
+									'option_name'  => 'timu_design_hub_canva_enabled',
+								),
+								'crello_enabled' => array(
+									'type'         => 'toggle',
+									'label'        => __( 'Enable Crello', TIMU_MEDIA_TEXT_DOMAIN ),
+									'description'  => __( 'Show Crello in Design Hub.', TIMU_MEDIA_TEXT_DOMAIN ),
+									'default'      => 0,
+									'option_name'  => 'timu_design_hub_crello_enabled',
+								),
+								'adobe_express_enabled' => array(
+									'type'         => 'toggle',
+									'label'        => __( 'Enable Adobe Express', TIMU_MEDIA_TEXT_DOMAIN ),
+									'description'  => __( 'Show Adobe Express in Design Hub.', TIMU_MEDIA_TEXT_DOMAIN ),
+									'default'      => 0,
+									'option_name'  => 'timu_design_hub_adobe_express_enabled',
+								),
+								'figma_enabled' => array(
+									'type'         => 'toggle',
+									'label'        => __( 'Enable Figma', TIMU_MEDIA_TEXT_DOMAIN ),
+									'description'  => __( 'Show Figma in Design Hub.', TIMU_MEDIA_TEXT_DOMAIN ),
+									'default'      => 0,
+									'option_name'  => 'timu_design_hub_figma_enabled',
+								),
+							),
+						),
 					)
 				);
 			}
@@ -125,6 +220,18 @@ function timu_media_init(): void {
 	}
 
 	new TIMU_Media_Support();
+
+	// Initialize Canva Integration.
+	if ( class_exists( __NAMESPACE__ . '\\Canva\\Canva_Integration' ) ) {
+		Canva\Canva_Integration::get_instance();
+		Canva\OAuth_Handler::get_instance();
+		Canva\Sync_Manager::get_instance();
+	}
+
+	// Initialize Design Hub.
+	if ( class_exists( __NAMESPACE__ . '\\DesignHub\\Design_Hub' ) ) {
+		DesignHub\Design_Hub::get_instance();
+	}
 }
 add_action( 'plugins_loaded', __NAMESPACE__ . '\timu_media_init', 12 );
 
