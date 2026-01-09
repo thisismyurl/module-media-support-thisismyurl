@@ -270,8 +270,14 @@ class Canva_Integration {
 		$attachment_id = media_handle_sideload( $file_array, 0 );
 
 		if ( is_wp_error( $attachment_id ) ) {
+			// Clean up the temporary file with proper path validation.
 			if ( file_exists( $tmp_file ) ) {
-				unlink( $tmp_file );
+				$normalized_tmp = wp_normalize_path( $tmp_file );
+				$temp_dir = wp_normalize_path( get_temp_dir() );
+				// Only delete if file is actually in temp directory.
+				if ( 0 === strpos( $normalized_tmp, $temp_dir ) ) {
+					unlink( $tmp_file );
+				}
 			}
 			return $attachment_id;
 		}
@@ -399,6 +405,11 @@ class Canva_Integration {
 					'post_mime_type' => 'image/webp',
 				)
 			);
+
+			// Clean up the original PNG file after successful WebP conversion.
+			if ( file_exists( $file ) && $file !== $saved['path'] ) {
+				wp_delete_file( $file );
+			}
 		}
 
 		// Generate responsive sizes.

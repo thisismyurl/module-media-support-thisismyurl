@@ -84,9 +84,19 @@ class Sync_Manager {
 		$result = $canva->sync_designs();
 
 		if ( is_wp_error( $result ) ) {
-			error_log( 'Canva sync error: ' . $result->get_error_message() );
+			// Store error for admin display instead of using error_log.
+			update_option(
+				'timu_canva_last_sync_error',
+				array(
+					'message'   => $result->get_error_message(),
+					'timestamp' => current_time( 'mysql' ),
+				)
+			);
 			return;
 		}
+
+		// Clear any previous error on successful sync.
+		delete_option( 'timu_canva_last_sync_error' );
 
 		// Store last sync time.
 		update_option( 'timu_canva_last_sync', current_time( 'mysql' ) );

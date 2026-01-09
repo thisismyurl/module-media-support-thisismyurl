@@ -261,18 +261,27 @@ class Design_Hub {
 	 * Render recent designs
 	 */
 	private function render_recent_designs(): void {
+		// Build meta query to include designs from multiple platforms.
+		$meta_query = array(
+			'relation' => 'OR',
+			array(
+				'key'     => '_canva_design_id',
+				'compare' => 'EXISTS',
+			),
+			// Add more platform meta keys as they are implemented.
+			// array(
+			// 'key'     => '_figma_design_id',
+			// 'compare' => 'EXISTS',
+			// ),
+		);
+
 		$query = new \WP_Query(
 			array(
 				'post_type'      => 'attachment',
 				'post_status'    => 'inherit',
 				'posts_per_page' => 12,
 				'post_mime_type' => 'image',
-				'meta_query'     => array(
-					array(
-						'key'     => '_canva_design_id',
-						'compare' => 'EXISTS',
-					),
-				),
+				'meta_query'     => $meta_query,
 				'orderby'        => 'date',
 				'order'          => 'DESC',
 			)

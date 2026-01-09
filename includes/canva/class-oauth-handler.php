@@ -79,16 +79,16 @@ class OAuth_Handler {
 			return;
 		}
 
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- OAuth callback from Canva.
-		if ( ! isset( $_GET['code'] ) ) {
-			return;
-		}
-
-		// Verify state.
+		// Verify state immediately to prevent CSRF attacks.
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- OAuth callback from Canva.
 		$state = isset( $_GET['state'] ) ? sanitize_text_field( wp_unslash( $_GET['state'] ) ) : '';
 		if ( ! wp_verify_nonce( $state, 'timu-canva-oauth' ) ) {
 			wp_die( esc_html__( 'Invalid state parameter', TIMU_MEDIA_TEXT_DOMAIN ) );
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- OAuth callback from Canva.
+		if ( ! isset( $_GET['code'] ) ) {
+			return;
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- OAuth callback from Canva.
