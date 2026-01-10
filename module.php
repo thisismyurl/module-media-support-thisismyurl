@@ -154,6 +154,12 @@ function timu_media_init(): void {
 	}
 
 	new TIMU_Media_Support();
+
+	// Load video support module if file exists.
+	$video_module_path = TIMU_MEDIA_PATH . 'module-videos-support-thisismyurl.php';
+	if ( file_exists( $video_module_path ) ) {
+		require_once $video_module_path;
+	}
 }
 add_action( 'plugins_loaded', __NAMESPACE__ . '\timu_media_init', 12 );
 
