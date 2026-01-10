@@ -2,41 +2,51 @@
 
 Media Hub for the thisismyurl.com Shared Code Suite - parent for image/video/audio processing plugins with shared media optimization and transcoding logic.
 
-## Features
+## Purpose
 
-### Canva Integration & Design Hub
-Comprehensive integration with Canva and other design platforms for creating, importing, and managing designs directly within WordPress.
+This repository serves as the **Media Hub** - the central coordination layer for all media processing across the TIMU suite. It provides:
 
-**Key Features:**
-- Create designs in Canva from Media Library
-- Real-time sync with Canva account
-- Template browser with category filtering
-- Multi-app Design Hub (Canva, Crello, Adobe Express, Figma)
-- Brand Kit integration
-- Auto-optimization (WebP conversion, responsive sizes)
-- Quick edit actions from Media Library
-- OAuth2 secure authentication
+- Shared media optimization and transcoding infrastructure
+- Cross-media-type features (usage tracking, collections, policies)
+- Common media processing APIs and interfaces
+- Batch processing coordination
+- Media insights and analytics
 
-For detailed documentation, see [CANVA_INTEGRATION.md](CANVA_INTEGRATION.md)
+## Repository Organization
 
-## Installation
+The TIMU Media Suite is organized into specialized repositories:
 
-This is a WordPress module that extends the TIMU Core system. It requires `core-support-thisismyurl` to be installed and active.
+- **media-support-thisismyurl** (this repository): Media Hub - shared infrastructure for ALL media types
+- **plugin-images-thisismyurl**: Image-specific features (filters, editing, smart cropping, etc.)
+- **plugin-video-thisismyurl**: Video-specific features (if applicable)
+- **plugin-audio-thisismyurl**: Audio-specific features (if applicable)
+
+### What Goes Here vs. Image Repository
+
+**Use this repository for:**
+- Features that work across multiple media types (images, video, audio)
+- Shared optimization and transcoding logic
+- Media usage tracking and analytics
+- Collections and organization features for all media
+- Permission policies and access control
+- Batch processing infrastructure
+
+**Use plugin-images-thisismyurl for:**
+- Image-specific editing tools (crop, rotate, filters)
+- Smart image tagging and categorization
+- Face/object detection in images
+- Image-specific social media features
+- Interactive image galleries and lightboxes
+- Image format conversions and optimizations
+
+See [FEATURE-IDEAS.md](FEATURE-IDEAS.md) for a comprehensive breakdown of feature ideas by repository.
+
+## Architecture
+
+This module extends the TIMU Core architecture as a "Hub" module. It registers capabilities that other modules (like plugin-images-thisismyurl) can depend on.
 
 ## Requirements
 
-- WordPress 6.4.0+
 - PHP 8.1.29+
-- TIMU Core Support module
-
-## Usage
-
-1. Install and activate TIMU Core Support
-2. This module will be automatically loaded
-3. Configure Canva integration via **TIMU Core → Media Support** settings
-4. Access Design Hub via **Media → Design Hub**
-
-## Support
-
-For issues, questions, or feature requests, please contact the TIMU Core support team.
-
+- WordPress 6.4.0+
+- TIMU Core Support module (core-support-thisismyurl)
