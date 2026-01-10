@@ -1,9 +1,29 @@
 <?php
 /**
- * Media Hub Module
+ * Plugin Name: Media Support (thisismyurl)
+ * Plugin URI: https://github.com/thisismyurl/plugin-media-support-thisismyurl
+ * Description: Media Hub for the thisismyurl.com Shared Code Suite - parent for image/video/audio processing plugins with shared media optimization and transcoding logic
+ * Version: 1.2601.0819
+ * Author: thisismyurl
+ * Requires at least: 6.4.0
+ * Requires PHP: 8.1.29
+ * Requires Plugins: plugin-wordpress-support-thisismyurl
+ * Text Domain: media-support-thisismyurl
  *
- * This module is loaded by the TIMU Core Module Loader.
- * It is NOT a WordPress plugin, but an extension of Core.
+ * PURPOSE:
+ * Serves as the Media Hub - central coordination layer for all media processing
+ * across the TIMU suite. Provides shared infrastructure for images, video, and audio.
+ *
+ * SCOPE:
+ * - Shared media optimization and transcoding infrastructure
+ * - Cross-media-type features (usage tracking, collections, policies)
+ * - Batch processing coordination
+ * - Media insights and analytics
+ *
+ * NOT IN SCOPE (belongs in plugin-images-thisismyurl):
+ * - Image-specific editing tools (crop, filters, etc.)
+ * - Smart image tagging and face detection
+ * - Image-specific social media features
  *
  * @package TIMU_CORE
  * @subpackage TIMU_MEDIA_HUB
@@ -29,11 +49,18 @@ define( 'TIMU_MEDIA_MIN_PHP', '8.1.29' );
 define( 'TIMU_MEDIA_MIN_WP', '6.4.0' );
 define( 'TIMU_SUITE_ID', 'thisismyurl-media-suite-2026' );
 define( 'TIMU_MEDIA_REQUIRES_CORE', 'core-support-thisismyurl/core-support-thisismyurl.php' );
+define( 'TIMU_MEDIA_REQUIRES_WORDPRESS', 'plugin-wordpress-support-thisismyurl/plugin-wordpress-support-thisismyurl.php' );
 
 /**
  * Initialize Media Support.
  */
 function timu_media_init(): void {
+	// Verify WordPress Support is present.
+	if ( ! class_exists( '\\TIMU\\WordPressSupport\\TIMU_WordPress_Support' ) ) {
+		add_action( 'admin_notices', __NAMESPACE__ . '\timu_media_missing_wordpress_support_notice' );
+		return;
+	}
+
 	// Verify Core is present.
 	if ( ! class_exists( '\\TIMU\\Core\\Spoke\\TIMU_Spoke_Base' ) ) {
 		add_action( 'admin_notices', __NAMESPACE__ . '\timu_media_missing_core_notice' );
@@ -41,6 +68,8 @@ function timu_media_init(): void {
 	}
 
 	// Register with Core module registry (Hub-level for media layer).
+	// This hub provides shared infrastructure for ALL media types.
+	// Image-specific features belong in plugin-images-thisismyurl.
 	do_action(
 		'timu_register_module',
 		array(
@@ -49,8 +78,8 @@ function timu_media_init(): void {
 			'type'         => 'hub',
 			'suite'        => 'media',
 			'version'      => TIMU_MEDIA_VERSION,
-			'description'  => __( 'Media hub for non-image media processing, batching, and policies.', TIMU_MEDIA_TEXT_DOMAIN ),
-			'capabilities' => array( 'media_hub', 'batch', 'policies' ),
+			'description'  => __( 'Media hub for shared media processing, batching, policies, and analytics across all media types.', TIMU_MEDIA_TEXT_DOMAIN ),
+			'capabilities' => array( 'media_hub', 'batch', 'policies', 'analytics', 'usage_tracking' ),
 			'path'         => TIMU_MEDIA_PATH,
 			'url'          => TIMU_MEDIA_URL,
 			'basename'     => TIMU_MEDIA_BASENAME,
@@ -133,6 +162,24 @@ function timu_media_init(): void {
 	}
 }
 add_action( 'plugins_loaded', __NAMESPACE__ . '\timu_media_init', 12 );
+
+/**
+ * Admin notice for missing WordPress Support.
+ */
+function timu_media_missing_wordpress_support_notice(): void {
+	if ( ! current_user_can( 'activate_plugins' ) ) {
+		return;
+	}
+	$plugin_name = dirname( TIMU_MEDIA_REQUIRES_WORDPRESS );
+	printf(
+		'<div class="notice notice-error"><p>%s</p></div>',
+		sprintf(
+			/* translators: %s: plugin name */
+			esc_html__( 'Media Support requires WordPress Support (%s) to be installed and active.', TIMU_MEDIA_TEXT_DOMAIN ),
+			esc_html( $plugin_name )
+		)
+	);
+}
 
 /**
  * Admin notice for missing Core.
