@@ -41,25 +41,25 @@ The Media Support plugin acts as a coordination layer that:
 
 ## Architecture
 
-This plugin functions as a **Hub** module in the TIMU Core architecture, registering capabilities that other modules (like `plugin-images-thisismyurl`) can depend on.
+This plugin functions as a **Hub** module in the TIMU Core architecture, registering capabilities that other modules (like `module-images-support-thisismyurl`) can depend on.
 
 ## What This Plugin Does NOT Include
 
 This plugin focuses on **shared infrastructure**. Media-type-specific features belong in specialized plugins:
 
-**Image-specific features** (belong in `plugin-images-thisismyurl`):
+**Image-specific features** (belong in `module-images-support-thisismyurl`):
 - Image editing tools (crop, rotate, filters)
 - Smart image tagging and categorization
 - Face/object detection in images
 - Image-specific social media features
 - Interactive image galleries and lightboxes
 
-**Video-specific features** (belong in `plugin-video-thisismyurl`):
+**Video-specific features** (belong in `module-video-support-thisismyurl`):
 - Video editing and trimming
 - Video player customization
 - Video transcoding presets
 
-**Audio-specific features** (belong in `plugin-audio-thisismyurl`):
+**Audio-specific features** (belong in `module-audio-support-thisismyurl`):
 - Audio editing and mixing
 - Audio player customization
 - Podcast-specific features
@@ -68,16 +68,16 @@ This plugin focuses on **shared infrastructure**. Media-type-specific features b
 
 The TIMU Media Suite is organized into:
 - **media-support-thisismyurl** (this repository): Media Hub for ALL media types
-- **plugin-images-thisismyurl**: Image-specific features
-- **plugin-video-thisismyurl**: Video-specific features
-- **plugin-audio-thisismyurl**: Audio-specific features
+- **module-images-support-thisismyurl**: Image-specific features
+- **module-video-support-thisismyurl**: Video-specific features
+- **module-audio-support-thisismyurl**: Audio-specific features
 
 ## Requirements
 
 - PHP 8.1.29+
 - WordPress 6.4.0+
 - TIMU Core Support module (core-support-thisismyurl)
-- TIMU WordPress Support module (plugin-wordpress-support-thisismyurl)
+- TIMU WordPress Support module (plugin-wp-support-thisismyurl)
 
 ## Suggested GitHub Repository Description
 
