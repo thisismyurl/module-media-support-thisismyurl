@@ -1,14 +1,10 @@
 <?php
 /**
- * Plugin Name: Media Support (thisismyurl)
- * Plugin URI: https://github.com/thisismyurl/plugin-media-support-thisismyurl
- * Description: Media Hub for the thisismyurl.com Shared Code Suite - parent for image/video/audio processing plugins with shared media optimization and transcoding logic
- * Version: 1.2601.0819
- * Author: thisismyurl
- * Requires at least: 6.4.0
- * Requires PHP: 8.1.29
- * Requires Plugins: plugin-wordpress-support-thisismyurl
- * Text Domain: media-support-thisismyurl
+ * TIMU Media Hub Module (Not a WordPress plugin)
+ *
+ * Loaded by TIMU Core Support via the Module Registry.
+ * This file should not contain a WordPress plugin header and must not be
+ * activated via the Plugins screen.
  *
  * PURPOSE:
  * Serves as the Media Hub - central coordination layer for all media processing
@@ -19,11 +15,6 @@
  * - Cross-media-type features (usage tracking, collections, policies)
  * - Batch processing coordination
  * - Media insights and analytics
- *
- * NOT IN SCOPE (belongs in plugin-images-thisismyurl):
- * - Image-specific editing tools (crop, filters, etc.)
- * - Smart image tagging and face detection
- * - Image-specific social media features
  *
  * @package TIMU_CORE
  * @subpackage TIMU_MEDIA_HUB
@@ -49,7 +40,7 @@ define( 'TIMU_MEDIA_MIN_PHP', '8.1.29' );
 define( 'TIMU_MEDIA_MIN_WP', '6.4.0' );
 define( 'TIMU_SUITE_ID', 'thisismyurl-media-suite-2026' );
 define( 'TIMU_MEDIA_REQUIRES_CORE', 'core-support-thisismyurl/core-support-thisismyurl.php' );
-define( 'TIMU_MEDIA_REQUIRES_WORDPRESS', 'plugin-wordpress-support-thisismyurl/plugin-wordpress-support-thisismyurl.php' );
+define( 'TIMU_MEDIA_REQUIRES_WORDPRESS', 'plugin-wp-support-thisismyurl/plugin-wp-support-thisismyurl.php' );
 
 /**
  * Initialize Media Support.
